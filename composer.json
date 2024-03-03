@@ -21,5 +21,15 @@
             "name": "Alexander Varwijk",
             "email": "alexander@getopensocial.com"
         }
-    ]
+    ],
+    "require-dev": {
+        "phpstan/extension-installer": "^1.3",
+        "phpstan/phpstan": "^1.10",
+        "phpstan/phpstan-strict-rules": "^1.5"
+    },
+    "config": {
+        "allow-plugins": {
+            "phpstan/extension-installer": true
+        }
+    }
 }
