@@ -10,10 +10,11 @@
     },
     "autoload": {
         "psr-4": {
-            "Kingdutch\\RevoltPlayground\\": "src/"
+            "Kingdutch\\RevoltPlayground\\": "src/",
+            "Drupal\\": "Drupal/"
         },
         "files": [
-            "Drupal/Async/functions.php"
+            "Drupal/Core/Async/functions.php"
         ]
     },
     "authors": [

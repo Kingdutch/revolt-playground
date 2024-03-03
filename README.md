@@ -22,19 +22,24 @@ The following demos are included. All the code that is specific to the demo can 
 `src/Demo/<demoname>` directories. Code that is expected to land in Drupal core and is needed in 
 more than one demo can be found in the `Drupal` directory.
 
+### BigPipe
+The `playground:demo:big-pipe` shows how to perform a bunch of tasks of varying length and then do 
+something with the output of each of the tasks as it becomes available.
+
 ### Bootstrap
 The bootstrap demo shows how the start of a webserver request's `index.php` (and similarly how 
 command line applications like Drush) will need to be adjusted to ensure that asynchronous 
 processes can properly finish.
 
-It contains the `demo:bootstrap:no-loop` command which shows how some async tasks are not 
-completed because the process exits too quickly. The `demo:bootstrap:with-loop` command shows 
-how adding `EventLoop::run()` at the end of the request ensures that ongoing async tasks can finish.
+It contains the `playground:demo:bootstrap:no-loop` command which shows how some async tasks are 
+not  completed because the process exits too quickly. The `playground:demo:bootstrap:with-loop` 
+command shows how adding `EventLoop::run()` at the end of the request ensures that ongoing 
+async tasks can finish.
 
 ### Suspension Order
-The `demo:suspension-order` exists to show that the usage of `getSuspension` might be slightly 
-counter-intuitive and that it can not be used to guarantee ordering of handling the results of 
-tasks. 
+The `playground:demo:suspension-order` exists to show that the usage of `getSuspension` might be 
+slightly counter-intuitive and that it can not be used to guarantee ordering of handling the 
+results of tasks. 
 
 To ensure results are handled in a specific order, higher-level primitives must be created. 
 Amp's concurrent function is one such example but [similar behaviour can easily be added to 
