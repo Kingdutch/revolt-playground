@@ -46,7 +46,9 @@ final class Result {
    *   A result in the OkT state.
    */
   public static function ok($value) : self {
-    return new self(TRUE, $value);
+    /** @var self<T, never> $result */
+    $result = new self(TRUE, $value);
+    return $result;
   }
 
   /**
@@ -60,7 +62,9 @@ final class Result {
    *   A result in the ErrorT state.
    */
   public static function error($value) : self {
-    return new self(FALSE, $value);
+    /** @var self<never, T> $result */
+    $result = new self(FALSE, $value);
+    return $result;
   }
 
   /**
