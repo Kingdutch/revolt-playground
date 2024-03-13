@@ -56,3 +56,42 @@ function stream(array $operations) : \Generator {
     yield $key => $result;
   }
 }
+
+/**
+ * Executes a set operations concurrently and return the results when done.
+ *
+ * @template KeyT of int|string
+ * @template ValueT
+ *
+ * @param array<KeyT, callable() : ValueT> $operations
+ *
+ * @return array<KeyT, \Drupal\Core\Result<ValueT, \Throwable>>
+ */
+function concurrently(array $operations) : array {
+  /** @var \Revolt\EventLoop\Suspension<array{KeyT, \Drupal\Core\Result<ValueT, \Throwable>}> $suspension */
+  $suspension = EventLoop::getSuspension();
+  $remaining = \count($operations);
+
+  $results = [];
+  foreach ($operations as $key => $operation) {
+    // Pre-fill the arrays to ensure that the order of results and errors are
+    // preserved regardless of the order in which operations completed.
+    $results[$key] = NULL;
+    EventLoop::queue(function () use ($key, $operation, $suspension, &$results, &$remaining) {
+      try {
+        $results[$key] = Result::ok($operation());
+      } catch (\Throwable $e) {
+        $results[$key] = Result::error($e);
+      }
+
+      if (--$remaining === 0) {
+        $suspension->resume();
+      }
+    });
+  }
+
+  $suspension->suspend();
+  assert(!in_array(NULL, $results, TRUE), "Incorrect implementation of " . __FUNCTION__ . ": resume called before all operations were completed.");
+
+  return $results;
+}
